@@ -345,17 +345,17 @@ export default function EnhancedNoteApp() {
       >
         {/* Task Header */}
         <View
-          style={
-            (styles.taskHeader,
+          style={[
+            styles.taskHeader,
             isMobile && {
               flexDirection: "column-reverse",
               gap: 20,
               marginBlockEnd: 20,
-            })
-          }
+            },
+          ]}
         >
           <View
-            style={(styles.taskHeaderParent, isMobile && { width: "100%" })}
+            style={[styles.taskHeaderParent, isMobile && { width: "100%" }]}
           >
             <TouchableOpacity
               onPress={() => toggleTaskCompletion(item.id)}
@@ -399,14 +399,14 @@ export default function EnhancedNoteApp() {
           </View>
 
           <View
-            style={
-              (styles.taskActions,
+            style={[
+              styles.taskActions,
               isMobile && {
                 width: "100%",
                 flexDirection: "row",
                 justifyContent: "flex-end",
-              })
-            }
+              },
+            ]}
           >
             <ThreeDButton
               onPress={() => toggleArchiveTask(item.id)}
