@@ -4,7 +4,7 @@
     "slug": "mdf-note",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo-mdf.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/logo-mdf.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.mdavafahreza.mdf_note"
@@ -32,7 +32,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/logo-mdf.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
@@ -47,7 +47,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "f1b67d8b-6409-4d88-9806-14da91221adc"
+        "projectId": "7cd50437-12da-42e4-ad86-82eb83dce719"
       }
     }
   }
