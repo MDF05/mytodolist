@@ -31,7 +31,7 @@ interface TaskItemProps {
   onShowHistory: (task: TaskNote) => void;
   editingTaskId: string | null;
   onStartEditing: (id: string, text: string) => void;
-  onSaveEditing: (id: string) => void;
+  onSaveEditing: (id: string, text: string) => void; // UPDATED: tambah parameter text
   editedText: string;
   setEditedText: (text: string) => void;
 }
@@ -126,7 +126,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
                 style={styles.editInput}
                 value={editedText}
                 onChangeText={setEditedText}
-                onBlur={() => onSaveEditing(item.id)}
+                onBlur={() => onSaveEditing(item.id, editedText)} // UPDATED: tambah parameter
                 autoFocus
                 multiline
               />
@@ -164,13 +164,21 @@ const TaskItem: React.FC<TaskItemProps> = ({
           {!item.archived && (
             <>
               {editingTaskId === item.id ? (
-                <ThreeDButton
-                  onPress={() => onSaveEditing(item.id)}
-                  title=""
-                  icon="check"
-                  color="#28a745"
-                  small={true}
-                />
+                <TouchableOpacity
+                  onPress={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onSaveEditing(item.id, editedText); // UPDATED: tambah parameter
+                  }}
+                  style={styles.saveButton}
+                >
+                  <LinearGradient
+                    colors={["#28a745", "#20c997"]}
+                    style={styles.saveButtonGradient}
+                  >
+                    <FontAwesome name="check" size={14} color="white" />
+                  </LinearGradient>
+                </TouchableOpacity>
               ) : (
                 <ThreeDButton
                   onPress={() => onStartEditing(item.id, item.text)}
@@ -193,7 +201,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
         </View>
       </View>
 
-      {/* Footnote Section - PERBAIKAN DI SINI */}
+      {/* Footnote Section */}
       {isEditingFootnote ? (
         <Animated.View
           entering={FadeIn.duration(300)}
@@ -226,7 +234,6 @@ const TaskItem: React.FC<TaskItemProps> = ({
           </View>
         </Animated.View>
       ) : item.footnote ? (
-        // Menampilkan footnote yang sudah ada
         <Animated.View
           entering={FadeIn.duration(300)}
           style={styles.footnoteContainer}
@@ -238,7 +245,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
         </Animated.View>
       ) : null}
 
-      {/* Tombol Tambah/Edit Catatan Kaki - TAMPIL SELALU saat tidak sedang edit */}
+      {/* Tombol Tambah/Edit Catatan Kaki */}
       {!item.archived && editingTaskId !== item.id && !isEditingFootnote && (
         <TouchableOpacity
           onPress={handleStartFootnoteEdit}
@@ -284,6 +291,22 @@ const TaskItem: React.FC<TaskItemProps> = ({
 };
 
 const styles = StyleSheet.create({
+  saveButton: {
+    borderRadius: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 6,
+    overflow: "hidden",
+  },
+  saveButtonGradient: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
   taskCard: {
     backgroundColor: "white",
     borderRadius: 20,

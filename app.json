@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "todolist-app-mobile",
-    "slug": "todolist-app-mobile",
+    "name": "mdf-note",
+    "slug": "mdf-note",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -9,14 +9,18 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mdavafahreza.mdf_note",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.mdavafahreza.todolistappmobile"
+      "package": "com.mdavafahreza.mdf_note"
     },
     "web": {
       "bundler": "metro",
@@ -43,7 +47,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "09704925-9053-4e5f-8c54-bd047dd5756c"
+        "projectId": "f1b67d8b-6409-4d88-9806-14da91221adc"
       }
     }
   }

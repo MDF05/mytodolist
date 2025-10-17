@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  StatusBar,
+} from "react-native";
 
 import { useTasks } from "./hooks/useTasks";
 import FloatingBackground from "./components/FloatingBackground";
@@ -11,13 +16,14 @@ import FilterButtons from "./components/FilterButtons";
 import TaskItem from "./components/TaskItem";
 import TaskHistoryModal from "./components/TaskHistoryModal";
 import EmptyState from "./components/EmptyState";
+import { TaskNote } from "./types/task.types";
 
 export default function EnhancedNoteApp() {
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [editedText, setEditedText] = useState<string>("");
   const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false);
-  const [selectedTaskHistory, setSelectedTaskHistory] = useState<any>(null);
+  const [selectedTaskHistory, setSelectedTaskHistory] = useState<TaskNote | null>(null);
 
   const {
     filteredTasks,
@@ -49,7 +55,8 @@ export default function EnhancedNoteApp() {
     setEditingTaskId(null);
   };
 
-  const handleShowHistory = (task: any) => {
+  // 🎯 PERBAIKAN: Pastikan fungsi ini didefinisikan dengan benar
+  const handleShowHistory = (task: TaskNote) => {
     setSelectedTaskHistory(task);
     setShowHistoryModal(true);
   };
@@ -60,8 +67,13 @@ export default function EnhancedNoteApp() {
 
   return (
     <View style={styles.container}>
+      <StatusBar 
+        backgroundColor="#667eea" 
+        barStyle="light-content" 
+      />
+      
       <FloatingBackground />
-
+      
       <MainHeader />
 
       <View style={styles.content}>
@@ -71,7 +83,6 @@ export default function EnhancedNoteApp() {
           onClearSearch={handleClearSearch}
         />
 
-        {/* Ganti TaskInput dengan AddTaskButton */}
         <AddTaskButton onPress={() => setShowAddModal(true)} />
 
         <FilterButtons
@@ -85,6 +96,8 @@ export default function EnhancedNoteApp() {
           data={filteredTasks}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
+          style={styles.taskList}
+          contentContainerStyle={filteredTasks.length === 0 && styles.emptyListContainer}
           renderItem={({ item, index }) => (
             <TaskItem
               item={item}
@@ -94,7 +107,7 @@ export default function EnhancedNoteApp() {
               onDelete={deleteTask}
               onUpdateText={updateTaskText}
               onUpdateFootnote={updateFootnote}
-              onShowHistory={handleShowHistory}
+              onShowHistory={handleShowHistory} // 🎯 PASTIKAN INI ADA
               editingTaskId={editingTaskId}
               onStartEditing={handleStartEditing}
               onSaveEditing={handleSaveEditing}
@@ -102,18 +115,18 @@ export default function EnhancedNoteApp() {
               setEditedText={setEditedText}
             />
           )}
-          ListEmptyComponent={<EmptyState searchQuery={searchQuery} />}
+          ListEmptyComponent={
+            <EmptyState searchQuery={searchQuery} />
+          }
         />
       </View>
 
-      {/* Modal untuk menambah task baru */}
       <AddTaskModal
         visible={showAddModal}
         onClose={() => setShowAddModal(false)}
         onAddTask={handleAddTask}
       />
 
-      {/* Modal untuk melihat history */}
       <TaskHistoryModal
         visible={showHistoryModal}
         onClose={() => setShowHistoryModal(false)}
@@ -130,7 +143,14 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 20,
+    padding: 16,
     zIndex: 1,
+  },
+  taskList: {
+    flex: 1,
+  },
+  emptyListContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
   },
 });

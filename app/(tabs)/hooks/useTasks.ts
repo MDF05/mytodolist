@@ -86,26 +86,41 @@ export const useTasks = () => {
     );
   };
 
+  
+
   const updateTaskText = (id: string, newText: string) => {
-    const now = new Date().toISOString();
-    setTasks(
-      tasks.map((task) => {
-        if (task.id === id) {
-          const updatedHistory = [
-            ...task.history,
-            { id: Date.now().toString(), text: newText, timestamp: now },
-          ];
-          return {
-            ...task,
-            text: newText,
-            updatedAt: now,
-            history: updatedHistory,
-          };
-        }
-        return task;
-      })
-    );
-  };
+  const trimmedText = newText.trim();
+  
+  // 🎯 CEK: Apakah text benar-benar berubah
+  const taskToUpdate = tasks.find(task => task.id === id);
+  if (!taskToUpdate || taskToUpdate.text === trimmedText) {
+    return; // Tidak update jika text sama
+  }
+  
+  const now = new Date().toISOString();
+  setTasks(
+    tasks.map((task) => {
+      if (task.id === id) {
+        const updatedHistory = [
+          ...task.history,
+          { 
+            id: Date.now().toString(), 
+            text: trimmedText, 
+            timestamp: now 
+          },
+        ];
+        return {
+          ...task,
+          text: trimmedText,
+          updatedAt: now,
+          history: updatedHistory,
+        };
+      }
+      return task;
+    })
+  );
+};
+
 
   const updateFootnote = (id: string, newFootnote: string) => {
     setTasks(
